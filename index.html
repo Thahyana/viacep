@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscador de CEP</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
         <div class="text-center mb-8">
@@ -20,10 +18,18 @@
                 Digite o CEP
             </label>
             <div class="flex gap-2">
-                <input type="text" id="cep" placeholder="00000-000" maxlength="9"
-                    class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition" />
-                <button disable id="buscarBtn"
-                    class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition font-medium">
+                <input 
+                    type="text" 
+                    id="cep" 
+                    placeholder="00000-000"
+                    maxlength="9"
+                    class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+                />
+                <button 
+                    disabled
+                    id="buscarBtn"
+                    class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition font-medium"
+                >
                     Buscar
                 </button>
             </div>
@@ -31,9 +37,7 @@
         </div>
 
         <div id="loading" class="hidden text-center py-8">
-            <div
-                class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-indigo-600 border-t-transparent">
-            </div>
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-indigo-600 border-t-transparent"></div>
             <p class="text-gray-600 mt-4">Buscando...</p>
         </div>
 
@@ -44,7 +48,7 @@
         <div id="resultado" class="hidden space-y-3">
             <div class="bg-indigo-50 rounded-lg p-4">
                 <h3 class="text-sm font-medium text-indigo-900 mb-3">Endereço encontrado:</h3>
-
+                
                 <div class="space-y-2">
                     <div class="flex justify-between border-b border-indigo-200 pb-2">
                         <span class="text-gray-600">CEP:</span>
@@ -71,12 +75,7 @@
         </div>
     </div>
     <script type="module">
-        //bairro
-        //cep
-        //estado
-        //logradouro
-        //localidade
-
+        
         const input = document.querySelector('#cep')
         const button = document.getElementById("buscarBtn")
         const cepDiv = document.getElementById("cepResultado")
@@ -85,49 +84,38 @@
         const estadoDiv = document.getElementById("estado")
         const cidadeDiv = document.getElementById("cidade")
         const resultado = document.getElementById("resultado")
-
-
-        button.addEventListener('click', async (e) => {
-            
+        
+        button.addEventListener('click', async (e)=>{
             const inputValue = input.value
             const data = await fetchData(inputValue)
-
 
             cepDiv.textContent = data.cep
             logradouroDiv.textContent = data.logradouro
             bairroDiv.textContent = data.bairro
             estadoDiv.textContent = data.estado
             cidadeDiv.textContent = data.localidade
+
+            resultado.classList.remove("hidden")
             
-            const isHidden = resultado.classList.contains("hidden")
-            
-            console.log(resultado)
         })
 
-        input.addEventListener('input', (e) => {
-           const cep = e.target.value
-           if (cep.length > 8){ 
-            button.removeAttribute("disabled")
-           } else {
-            button.setAttribute("disabled", "")
-           }
-       })
+        input.addEventListener('input', (e)=>{
+            const cep = e.target.value
 
+            if(cep.length > 8){
+                button.removeAttribute("disabled")
+            } else {
+                button.setAttribute("disabled", "")
+            }
+        })
 
-        const cep = input.value
-        console.log(cep)
-
-
-        async function fetchData(cep) {
+        async function fetchData(cep){
             const data = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
             const jsonData = await data.json()
 
             return jsonData
         }
-
-
-
+        
     </script>
 </body>
-
 </html>
